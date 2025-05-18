@@ -29,29 +29,32 @@
     *3*. Chekc that was not deprecated otherwise look for other solution
 --]]
 return {
-	"nvimtools/none-ls.nvim",
-	dependencies = {
-		"nvimtools/none-ls-extras.nvim",
-	},
-	config = function()
-		local null_ls = require("null-ls")
-		require("functions.register_mappings")
-		null_ls.setup({
-			sources = {
-				-- require("none-ls.diagnostics.eslint_d"),
-				null_ls.builtins.formatting.stylua,
-				null_ls.builtins.formatting.prettier,
-			},
-		})
+  "nvimtools/none-ls.nvim",
+  dependencies = {
+    "nvimtools/none-ls-extras.nvim",
+    "neovim/nvim-lspconfig",
+  },
+  lazy = true,
+  event = "LspAttach",
+  config = function()
+    local null_ls = require("null-ls")
+    require("functions.register_mappings")
+    null_ls.setup({
+      sources = {
+        -- require("none-ls.diagnostics.eslint_d"),
+        -- null_ls.builtins.formatting.stylua,
+        -- null_ls.builtins.formatting.prettier,
+      },
+    })
 
-		-- this next line require lsp_config to work properly
-		-- it binds to format the code using a formatter from a lsp parser
-		Keymap(
-			"n",
-			"<leader>fc",
-			vim.lsp.buf.format,
-			{ desc = "Format the code of the current file using LSP" },
-      "none-ls"
-		)
-	end,
+    -- this next line require lsp_config to work properly
+    -- it binds to format the code using a formatter from a lsp parser
+    Keymap(
+      "n",
+      "<leader>fc",
+      vim.lsp.buf.format,
+      { desc = "Format the code of the current file using LSP" },
+      "null-ls.nvim"
+    )
+  end,
 }
