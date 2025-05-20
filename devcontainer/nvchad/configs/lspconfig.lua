@@ -5,6 +5,32 @@ local nvlsp = require "nvchad.configs.lspconfig"
 
 local servers = {
   "lua_ls",
+  "ts_ls",
+}
+
+lspconfig.ts_ls.setup {
+  init_options = {
+    preferences = {
+      -- other preferences
+      importModuleSpecifier = "non-relative",
+      importModuleSpecifierPreference = "non-relative",
+    }
+  },
+  on_attach = function (client, bufnr)
+    -- use default on_attach provided by nvchad
+    nvlsp.on_attach(client, bufnr)
+
+    -- Disable tsserver's formatting capabilities if using external formatters
+    client.server_capabilities.documentFormattingProvider = false
+  end,
+  on_init = nvlsp.on_init,
+  capabilities = nvlsp.capabilities,
+  settings = {
+    -- Customize settings for tsserver if needed
+    completions = {
+      completeFunctionCalls = true,
+    }
+  }
 }
 
 vim.diagnostic.config {

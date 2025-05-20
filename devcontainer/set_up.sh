@@ -95,12 +95,14 @@ PLUGINS_LIST = (
   "harpoon",
   "linter_and_formatter",
   "smooth_scroll",
-  "start_screen"
+  "start_screen",
+  "nvim_autotag"
 )
 for plugin in "${PLUGINS_LIST[@]}"; do
     cp "$PLUGINS_SOURCE_DIR/${plugin}.lua" "$PLUGINS_DEST_DIR"
 done
 cp ~/dotfiles/devcontainer/nvchad/plugins/init.lua "$PLUGINS_DEST_DIR"
+cp ~/dotfiles/devcontainer/nvchad/configs/lspconfig.lua ~/.config/nvim/lua/configs/
 
 echo "added plugins"
 
