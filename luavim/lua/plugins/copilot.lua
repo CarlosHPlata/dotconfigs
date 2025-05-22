@@ -18,6 +18,17 @@ return {
   {
     "github/copilot.vim",
     lazy = false,
+    init = function()
+      vim.g.copilot_no_tab_map = true
+      vim.g.copilot_assume_mapped = true
+
+      local map = function(type, key, value, opts)
+        local options = { noremap = true }
+        if opts then options = vim.tbl_extend('force', options, opts) end
+        vim.api.nvim_set_keymap(type, key, value, options)
+      end
+      map("i", "<space><Tab>", "copilot#Accept('<CR>')", { noremap = true, silent = true, expr = true })
+    end,
   },
   {
     "CopilotC-Nvim/CopilotChat.nvim",
