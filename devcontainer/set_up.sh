@@ -51,6 +51,7 @@ else
 fi
 
 echo "alias ls='lsd -hA --group-dirs first'" >> ~/.zshrc
+echo "alias fix-perms='sudo chown -R $(whoami):$(whoami) $(pwd)'" >> ~/.zshrc
 echo "🚀 installing NvChad... 💪🏻"
 git clone https://github.com/NvChad/starter ~/.config/nvim
 
@@ -89,12 +90,18 @@ echo "💡Copying plugins configuration files..."
 PLUGINS_SOURCE_DIR="$HOME/dotfiles/luavim/lua/plugins"
 PLUGINS_DEST_DIR="$HOME/.config/nvim/lua/plugins/"
 
+PLUGINS_LIST = (
+  "copilot",
+  "harpoon",
+  "linter_and_formatter",
+  "smooth_scroll",
+  "start_screen"
+)
+for plugin in "${PLUGINS_LIST[@]}"; do
+    cp "$PLUGINS_SOURCE_DIR/${plugin}.lua" "$PLUGINS_DEST_DIR"
+done
 cp ~/dotfiles/devcontainer/nvchad/plugins/init.lua "$PLUGINS_DEST_DIR"
-cp "$PLUGINS_SOURCE_DIR"/copilot.lua "$PLUGINS_DEST_DIR"
-cp "$PLUGINS_SOURCE_DIR"/harpoon.lua "$PLUGINS_DEST_DIR"
-cp "$PLUGINS_SOURCE_DIR"/linter_and_formatter.lua "$PLUGINS_DEST_DIR"
-cp "$PLUGINS_SOURCE_DIR"/smooth_scroll.lua "$PLUGINS_DEST_DIR"
-cp "$PLUGINS_SOURCE_DIR"/start_screen.lua "$PLUGINS_DEST_DIR"
+
 echo "added plugins"
 
 
