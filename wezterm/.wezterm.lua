@@ -10,11 +10,20 @@ local wezterm = require("wezterm")
 
 ------------------- my own variables (change this with your own values)
 
---this initializes where the executable of powershell for WINDOWS is located
+-- Local programs (Windows host)
 local DEFAULT_PROG =
 "C:\\Users\\carl_\\AppData\\Local\\Microsoft\\WindowsApps\\Microsoft.PowerShell_8wekyb3d8bbwe\\pwsh.exe"
--- to init a different domain
 local WSL_DOMAIN = "WSL:Ubuntu-20.04"
+
+-- SSH servers to multiplex into. Add new boxes here.
+-- `name` is what shows in the tab selector and is used as the domain name.
+local SSH_HOSTS = {
+  { name = "relicario", host = "192.168.1.205", user = "root" },
+  { name = "appserver", host = "192.168.1.207", user = "root" },
+}
+
+-- Which SSH host to open on launch.
+local DEFAULT_SSH_HOST = "relicario"
 
 local DEFAULT_OPACITY = 0.95
 local TOGGLE_OPACITY = 1
@@ -29,6 +38,24 @@ local config = wezterm.config_builder()
 -- This is where you actually apply your config choices
 config.window_decorations = "RESIZE"
 config.default_prog = { DEFAULT_PROG }
+
+-- Build SSH multiplexing domains from SSH_HOSTS.
+-- multiplexing = "WezTerm" spawns wezterm-mux-server on the remote, so
+-- tabs/panes are native WezTerm and persist across disconnects.
+-- Requires `wezterm` installed on each Debian server.
+config.ssh_domains = {}
+for _, h in ipairs(SSH_HOSTS) do
+  table.insert(config.ssh_domains, {
+    name = h.name,
+    remote_address = h.host,
+    username = h.user,
+    multiplexing = "WezTerm",
+    assume_shell = "Posix",
+  })
+end
+
+-- Auto-connect to the main Debian box on launch.
+config.default_domain = DEFAULT_SSH_HOST
 
 config.color_scheme = COLOR_SCHEME
 config.font = wezterm.font_with_fallback({
@@ -56,6 +83,17 @@ wezterm.on("toggle-opacity", function(window, _)
   window:set_config_overrides(overrides)
 end)
 
+-- Build the leader+t spawn-tab choices: every SSH host + local PowerShell + WSL.
+local function build_tab_choices()
+  local choices = {}
+  for _, h in ipairs(SSH_HOSTS) do
+    table.insert(choices, { label = "SSH: " .. h.name .. " (" .. h.host .. ")", id = "ssh:" .. h.name })
+  end
+  table.insert(choices, { label = "PowerShell (local)", id = "powershell" })
+  table.insert(choices, { label = "WSL", id = "wsl" })
+  return choices
+end
+
 -- keybindings
 config.leader = { key = "x", mods = "CTRL", timeout_milliseconds = 1000 }
 config.keys = {
@@ -80,25 +118,39 @@ config.keys = {
     mods = "LEADER",
     action = wezterm.action.InputSelector({
       title = "Open New Tab",
-      choices = {
-        {
-          label = "Powershell",
-          id = "powershell",
-        },
-        {
-          label = "WSL",
-          id = "wsl",
-        },
-      },
+      choices = build_tab_choices(),
       action = wezterm.action_callback(function(window, pane, id, label)
         if not id and not label then
           wezterm.log_info("cancelled")
         elseif id == "powershell" then
-          window:perform_action(wezterm.action.SpawnTab("DefaultDomain"), pane)
+          window:perform_action(wezterm.action.SpawnTab({ DomainName = "local" }), pane)
         elseif id == "wsl" then
           window:perform_action(wezterm.action.SpawnTab({ DomainName = WSL_DOMAIN }), pane)
+        elseif id and id:sub(1, 4) == "ssh:" then
+          local ssh_name = id:sub(5)
+          window:perform_action(wezterm.action.SpawnTab({ DomainName = ssh_name }), pane)
         else
           wezterm.log_info("unknown id: ", id)
+        end
+      end),
+    }),
+  },
+  -- Quick SSH host switcher: attach an existing tab/pane to another SSH domain
+  {
+    key = "s",
+    mods = "LEADER",
+    action = wezterm.action.InputSelector({
+      title = "Connect to SSH host",
+      choices = (function()
+        local c = {}
+        for _, h in ipairs(SSH_HOSTS) do
+          table.insert(c, { label = h.name .. " (" .. h.user .. "@" .. h.host .. ")", id = h.name })
+        end
+        return c
+      end)(),
+      action = wezterm.action_callback(function(window, pane, id, _)
+        if id then
+          window:perform_action(wezterm.action.SpawnTab({ DomainName = id }), pane)
         end
       end),
     }),
