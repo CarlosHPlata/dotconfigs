@@ -62,6 +62,11 @@ end
 -- Auto-connect to the main Debian box on launch.
 config.default_domain = DEFAULT_SSH_HOST
 
+-- Close panes whose process exited (clean or not). Default is
+-- "CloseOnCleanExit", which leaves SSH panes stuck on "Exited with code 1"
+-- after a failed password — the tab becomes unusable until manually closed.
+config.exit_behavior = "Close"
+
 config.color_scheme = COLOR_SCHEME
 config.font = wezterm.font_with_fallback({
   { family = "JetBrains Mono", weight = "Regular" },
@@ -209,6 +214,11 @@ config.keys = {
     mods = "LEADER",
     key = "x",
     action = wezterm.action.CloseCurrentPane({ confirm = true }),
+  },
+  {
+    mods = "LEADER|SHIFT",
+    key = "X",
+    action = wezterm.action.CloseCurrentTab({ confirm = true }),
   },
   {
     mods = "LEADER",
