@@ -82,6 +82,12 @@ config.inactive_pane_hsb = {
   brightness = 0.5,
 }
 
+-- Start maximized
+wezterm.on("gui-startup", function(cmd)
+  local _, _, window = wezterm.mux.spawn_window(cmd or {})
+  window:gui_window():maximize()
+end)
+
 wezterm.on("toggle-opacity", function(window, _)
   local overrides = window:get_config_overrides() or {}
   if not overrides.window_background_opacity then
