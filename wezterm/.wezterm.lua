@@ -7,7 +7,7 @@
 ---
 --- My Wezterm config file
 local wezterm = require("wezterm")
-local bar = wezterm.plugin.require("https://github.com/adriankarlen/bar.wezterm")
+local tabline = wezterm.plugin.require("https://github.com/michaelbrusegard/tabline.wez")
 
 ------------------- my own variables (change this with your own values)
 
@@ -261,12 +261,36 @@ end
 -- Tabs
 --config.enable_tab_bar = false
 config.hide_tab_bar_if_only_one_tab = false
-config.tab_bar_at_bottom = false
+config.tab_bar_at_bottom = true
 config.use_fancy_tab_bar = false
 config.tab_and_split_indices_are_zero_based = true
 
--- bar.wezterm status bar (handles leader indicator, workspace, CWD, hostname, time)
-bar.apply_to_config(config)
+-- tabline.wez status bar (lualine-style; surfaces mode, workspace, SSH domain, time)
+tabline.setup({
+  options = {
+    theme = "tokyonight_night",
+    section_separators = { left = "", right = "" },
+    component_separators = { left = "", right = "" },
+    tab_separators = { left = "", right = "" },
+  },
+  sections = {
+    tabline_a = { "mode" },
+    tabline_b = { "workspace" },
+    tabline_c = { " " },
+    tab_active = {
+      "index",
+      { "process", padding = { left = 0, right = 1 } },
+    },
+    tab_inactive = {
+      "index",
+      { "process", padding = { left = 0, right = 1 } },
+    },
+    tabline_x = { "ram", "cpu" },
+    tabline_y = { "datetime" },
+    tabline_z = { "domain" },
+  },
+})
+tabline.apply_to_config(config)
 
 -- and finally, return the configuration to wezterm
 return config
