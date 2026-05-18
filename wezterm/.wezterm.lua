@@ -40,6 +40,10 @@ local config = wezterm.config_builder()
 config.window_decorations = "RESIZE"
 config.default_prog = { DEFAULT_PROG }
 
+-- Initial window size (~80% of a 1440p screen with JetBrains Mono)
+config.initial_cols = 200
+config.initial_rows = 55
+
 -- Build SSH multiplexing domains from SSH_HOSTS.
 -- multiplexing = "WezTerm" spawns wezterm-mux-server on the remote, so
 -- tabs/panes are native WezTerm and persist across disconnects.
@@ -81,16 +85,6 @@ config.inactive_pane_hsb = {
   saturation = 0.24,
   brightness = 0.5,
 }
-
--- Start each new window maximized (once per window)
-local maximized_windows = {}
-wezterm.on("window-config-reloaded", function(window)
-  local id = window:window_id()
-  if not maximized_windows[id] then
-    maximized_windows[id] = true
-    window:maximize()
-  end
-end)
 
 wezterm.on("toggle-opacity", function(window, _)
   local overrides = window:get_config_overrides() or {}
@@ -179,6 +173,31 @@ config.keys = {
     key = "o",
     mods = "LEADER",
     action = wezterm.action.EmitEvent("toggle-opacity"),
+  },
+  -- Workspaces: w = fuzzy switcher, W = create new named workspace
+  {
+    key = "w",
+    mods = "LEADER",
+    action = wezterm.action.ShowLauncherArgs({ flags = "FUZZY|WORKSPACES" }),
+  },
+  {
+    key = "W",
+    mods = "LEADER|SHIFT",
+    action = wezterm.action.PromptInputLine({
+      description = wezterm.format({
+        { Attribute = { Intensity = "Bold" } },
+        { Foreground = { AnsiColor = "Fuchsia" } },
+        { Text = "New workspace name:" },
+      }),
+      action = wezterm.action_callback(function(window, pane, line)
+        if line and line ~= "" then
+          window:perform_action(
+            wezterm.action.SwitchToWorkspace({ name = line }),
+            pane
+          )
+        end
+      end),
+    }),
   },
   -- tabs
   {
