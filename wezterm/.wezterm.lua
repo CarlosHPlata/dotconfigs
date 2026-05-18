@@ -67,6 +67,15 @@ config.window_close_confirmation = "AlwaysPrompt"
 config.scrollback_lines = 3000
 config.default_workspace = "main"
 
+-- Advertise the wezterm terminfo to remote programs (nvim, less, etc.)
+-- so they use WezTerm's full capabilities and avoid partial-redraw artifacts.
+-- Requires `wezterm.terminfo` installed on each remote (tic -x wezterm.terminfo).
+config.term = "wezterm"
+
+-- Coalesce mux-server output before parsing/rendering. Reduces flicker and
+-- stale cells when a TUI (nvim) sends many small updates over the wire.
+config.mux_output_parser_coalesce_delay_ms = 3
+
 -- Dim inactive panes
 config.inactive_pane_hsb = {
   saturation = 0.24,
