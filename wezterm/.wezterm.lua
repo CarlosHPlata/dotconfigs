@@ -82,10 +82,14 @@ config.inactive_pane_hsb = {
   brightness = 0.5,
 }
 
--- Start maximized
-wezterm.on("gui-startup", function(cmd)
-  local _, _, window = wezterm.mux.spawn_window(cmd or {})
-  window:gui_window():maximize()
+-- Start each new window maximized (once per window)
+local maximized_windows = {}
+wezterm.on("window-config-reloaded", function(window)
+  local id = window:window_id()
+  if not maximized_windows[id] then
+    maximized_windows[id] = true
+    window:maximize()
+  end
 end)
 
 wezterm.on("toggle-opacity", function(window, _)
