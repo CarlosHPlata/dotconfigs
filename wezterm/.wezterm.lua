@@ -44,17 +44,17 @@ config.default_prog = { DEFAULT_PROG }
 config.initial_cols = 200
 config.initial_rows = 55
 
--- Build SSH multiplexing domains from SSH_HOSTS.
--- multiplexing = "WezTerm" spawns wezterm-mux-server on the remote, so
--- tabs/panes are native WezTerm and persist across disconnects.
--- Requires `wezterm` installed on each Debian server.
+-- Build SSH domains from SSH_HOSTS.
+-- multiplexing = "None" uses plain SSH per tab/pane (no remote persistence
+-- across disconnects, but no mux quirks either — image protocols, fastfetch,
+-- and TUIs render cleanly because there's no wezterm-mux-server in the path).
 config.ssh_domains = {}
 for _, h in ipairs(SSH_HOSTS) do
   table.insert(config.ssh_domains, {
     name = h.name,
     remote_address = h.host,
     username = h.user,
-    multiplexing = "WezTerm",
+    multiplexing = "None",
     assume_shell = "Posix",
   })
 end
