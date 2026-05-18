@@ -64,7 +64,7 @@ bindkey '^n' history-search-forward
 # aliases
 alias ls="lsd -A --group-dirs=first"
 alias v='nvim'
-alias c='clear'
+alias c='clear && fastfetch'
 alias glog='ssh-add ~/.ssh/github'
 
 export PATH="$HOME/.local/bin:$PATH"
