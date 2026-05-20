@@ -1,0 +1,166 @@
+{
+  "security.allowedUNCHosts": [
+    "wsl.localhost"
+  ],
+  "workbench.colorTheme": "Tokyo Night",
+  "workbench.iconTheme": "catppuccin-macchiato",
+  "editor.fontLigatures": true,
+  "editor.allowVariableFontsInAccessibilityMode": true,
+  "editor.fontFamily": "FiraCode Nerd Font Mono",
+  "terminal.integrated.fontFamily": "FiraCode Nerd Font Mono",
+  "terminal.integrated.fontSize": 14,
+  "remote.SSH.remotePlatform": {
+    "192.168.1.200": "linux",
+    "domainexpansion": "linux"
+  },
+  "workbench.settings.applyToAllProfiles": [],
+  "vim.easymotion": true,
+  "vim.incsearch": true,
+  "vim.useSystemClipboard": true,
+  "vim.hlsearch": true,
+  "vim.leader": ",",
+  "extensions.experimental.affinity": {
+    "vscodevim.vim": 1
+  },
+  "vim.handleKeys": {
+    "<C-a>": false,
+    "<C-f>": false,
+    "<C-c>": false,
+    "<C-v>": false,
+    "<C-z>": false,
+    "<C-s>": false,
+    "<C-x>": false,
+    "<Tab>": false,
+    "<S-Tab>": false,
+  },
+  "vim.normalModeKeyBindings": [
+    {
+      "before": [
+        "<leader>",
+        ";"
+      ],
+      "after": [
+        "m",
+        "l",
+        "A",
+        ";",
+        "<Esc>",
+        "`",
+        "l"
+      ]
+    },
+    {
+      "before": [
+        "<leader>",
+        ","
+      ],
+      "after": [
+        "m",
+        "l",
+        "A",
+        ",",
+        "<Esc>",
+        "`",
+        "l"
+      ]
+    }
+  ],
+  "vim.insertModeKeyBindings": [
+    {
+      "before": [
+        "<leader>",
+        ";"
+      ],
+      "after": [
+        "<Esc>",
+        "m",
+        "l",
+        "A",
+        ";",
+        "<Esc>",
+        "`",
+        "l",
+        "a"
+      ]
+    },
+    {
+      "before": [
+        "<leader>",
+        "<leader>"
+      ],
+      "after": [
+        "<Esc>",
+        "m",
+        "l",
+        "A",
+        ",",
+        "<Esc>",
+        "`",
+        "l",
+        "a"
+      ]
+    }
+  ],
+
+  // custom looking
+  "workbench.statusBar.visible": false,
+  "workbench.startupEditor": "none",
+  "workbench.tips.enabled": false,
+  "editor.minimap.enabled": false,
+  "breadcrumbs.icons": false,
+  "breadcrumbs.enabled": true,
+  "workbench.sideBar.location": "right",
+  "catppuccin-icons.hidesExplorerArrows": true,
+  "workbench.tree.renderIndentGuides": "none",
+  "workbench.tree.indent": 8,
+  "explorer.compactFolders": false,
+  "window.zoomLevel": 3,
+  "window.customTitleBarVisibility": "never",
+  "extensions.ignoreRecommendations": true,
+  "editor.cursorBlinking": "phase",
+  "editor.cursorSmoothCaretAnimation": "on",
+  "editor.glyphMargin": true,
+  "editor.showFoldingControls": "never",
+  "claudeCode.preferredLocation": "sidebar",
+  "editor.lineNumbers": "on",
+  "editor.tokenColorCustomizations": {
+    "textMateRules": [
+      {
+        "scope": "comment",
+        "settings": {
+          "fontStyle": "italic"
+        }
+      },
+    ]
+  },
+
+  //hiding titlebar in windows
+  "window.titleBarStyle": "custom",
+  "window.menuBarVisibility": "compact",
+  "workbench.layoutControl.type": "menu",
+  "workbench.layoutControl.enabled": false,
+  "window.title": " ",
+  "chat.agentsControl.enabled": "hidden",
+  "window.commandCenter": false,
+  "window.density.editorTabHeight": "compact",
+  "custom-ui-style.stylesheet": {
+    ".tabs-and-actions-container": "padding-left: 0 !important",
+    ".monaco-toolbar": "opacity: 0 !important",
+    ".monaco-workbench .codicon.codicon-breadcrumb-separator": "font-size: 12px; padding-top: 3px",
+    ".monaco-breadcrumbs": "opacity: 40%; height: 15px",
+    ".breadcrumbs-control.backslash-path.relative-path": "height: 15px",
+    ".line-numbers": "font-size: 8pt; opacity: 70%",
+    ".monaco-editor .glyph-margin-widgets .cgmr": "opacity: 15%",
+    ".quick-input-widget": "top 25vh !important",
+    ".monaco-action-bar.quic-input-inline-action-bar": "display: none",
+    ".editor-widget.find-widget": "box-shadow: none; border-radius: 4px",
+    ".sidebar .title-label": "padding 0 !important",
+    ".monaco-workbench .part.editor>.content .editor-group-container>.title .tabs-container>.tab:not(.active)": "opacity: 45% !important",
+    ".monaco-workbench .part.editor>.content .editor-group-container>.title .tabs-container>.tab.sizing-fit": "opacity: 85%"
+  },
+  "custom-ui-style.font.sansSerif": "FiraCode Nerd Font Mono",
+  "vscode_custom_css.imports": [
+    "file:///c%3A/Users/carl_/.vscode/extensions/30d98f9b2.neovide-cursor-1.0.1/neovide-cursor.js"
+  ],
+  "workbench.activityBar.location": "hidden"
+}
